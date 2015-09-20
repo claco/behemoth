@@ -1,0 +1,16 @@
+---
+# tasks file for ./ansible/roles/apt_config
+- name: Enable Apt Proxy
+  template:
+    src: apt_proxy.conf.j2
+    dest: "{{ apt_config_proxy_path }}"
+    owner: root
+    group: root
+    mode: 0644
+  when: ansible_os_family == "Debian" and apt_config_proxy_enable
+
+- name: Disable Apt Proxy
+  file:
+    path: "{{ apt_config_proxy_path }}"
+    state: absent
+  when: ansible_os_family == "Debian" and not apt_config_proxy_enable

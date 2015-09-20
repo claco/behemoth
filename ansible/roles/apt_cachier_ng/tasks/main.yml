@@ -1,0 +1,32 @@
+---
+# tasks file for ./ansible/roles/apt_cachier_ng
+- name: Install Apt-Cachier-NG
+  apt: name=apt-cacher-ng state=latest update_cache=yes cache_valid_time=3600
+
+- name: Create Apt-Cachier-NG CacheDir
+  file: path={{ apt_cacher_ng_cache_dir }} owner=apt-cacher-ng group=apt-cacher-ng mode=2755 state=directory
+
+- name: Set config
+  lineinfile:
+    dest: /etc/apt-cacher-ng/acng.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+    state: "{{ item.state | default('present') }}"
+  with_items:
+    - { regexp: "^CacheDir:\ ", line: "CacheDir: {{ apt_cacher_ng_cache_dir }}" }
+    - { regexp: "^Port:", line: "Port: {{ apt_cacher_ng_port }}" }
+  notify:
+    - restart apt-cacher-ng
+
+- name: Remove Default DebConf
+  file:
+    path: /etc/apt-cacher-ng/zz_debconf.conf
+    state: absent
+  notify:
+    - restart apt-cacher-ng
+
+- name: Enable Apt-Cachier-NG
+  service:
+    name: apt-cacher-ng
+    state: started
+    enabled: yes

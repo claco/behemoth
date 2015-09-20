@@ -1,0 +1,9 @@
+---
+- name: Configure Consul Servers
+  hosts: consul
+  roles:
+    - { role: apt_config }
+    - { role: common }
+  vars:
+    apt_config_proxy_host: "{{ hostvars[groups['bastion'][0]].ansible_eth1.ipv4.address }}"
+    apt_config_proxy_enable: true

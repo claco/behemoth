@@ -1,0 +1,7 @@
+---
+- name: Configure Bastion Servers
+  hosts: bastion
+  roles:
+    - { role: apt_cachier_ng }
+    - { role: apt_config, apt_config_proxy_enable: true }
+    - { role: common }

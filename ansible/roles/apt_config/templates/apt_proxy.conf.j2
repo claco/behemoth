@@ -1,0 +1,7 @@
+# {{ ansible_managed }}
+{% if apt_config_proxy_http %}
+Acquire::http { Proxy "{{ apt_config_proxy_http }}"; };
+{% endif %}
+{% if apt_config_proxy_https %}
+Acquire::https { Proxy "{{ apt_config_proxy_https }}"; };
+{% endif %}

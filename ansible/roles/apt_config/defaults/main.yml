@@ -1,0 +1,8 @@
+---
+# defaults file for ./ansible/roles/apt_config
+apt_config_proxy_enable: false
+apt_config_proxy_host: localhost
+apt_config_proxy_path: /etc/apt/apt.conf.d/01proxy
+apt_config_proxy_port: 3142
+apt_config_proxy_http: "http://{{ apt_config_proxy_host }}:{{ apt_config_proxy_port }}"
+apt_config_proxy_https:
